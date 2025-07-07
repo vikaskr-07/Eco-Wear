@@ -214,19 +214,77 @@ export default function Index() {
             >
               <div className="text-center mb-10">
                 <div className="relative inline-block mb-6">
-                  <h2 className="text-4xl font-bold bg-gradient-to-r from-eco-700 via-eco-800 to-eco-900 bg-clip-text text-transparent">
-                    Track Your Clothing's Carbon Footprint
+                  <div className="flex items-center justify-center gap-3 mb-4">
+                    <div className="flex items-center gap-2 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 px-4 py-2 rounded-full">
+                      <Brain className="w-5 h-5 text-blue-600 dark:text-blue-400 animate-pulse" />
+                      <span className="text-sm font-semibold text-blue-700 dark:text-blue-300">
+                        Powered by AI Vision
+                      </span>
+                    </div>
+                  </div>
+                  <h2 className="text-4xl font-bold bg-gradient-to-r from-eco-700 via-eco-800 to-eco-900 dark:from-eco-300 dark:via-eco-200 dark:to-eco-100 bg-clip-text text-transparent">
+                    AI Carbon Footprint Analysis
                   </h2>
-                  <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-eco-400 to-eco-600 rounded-full" />
+                  <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-blue-400 via-eco-500 to-purple-600 rounded-full animate-pulse" />
                 </div>
                 <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
-                  Upload or capture an image of your clothing items to discover
-                  their environmental impact and earn{" "}
-                  <span className="font-semibold text-eco-600">
+                  Our{" "}
+                  <span className="font-semibold text-blue-600 dark:text-blue-400">
+                    advanced AI
+                  </span>{" "}
+                  instantly recognizes clothing items and calculates their
+                  environmental impact. Earn{" "}
+                  <span className="font-semibold text-eco-600 dark:text-eco-400">
                     eco-reward points
                   </span>{" "}
-                  for sustainable choices.
+                  for sustainable choices and discover your fashion's carbon
+                  footprint.
                 </p>
+
+                {/* AI Features showcase */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 max-w-4xl mx-auto">
+                  <div className="flex items-center gap-3 p-4 bg-white/50 dark:bg-gray-800/50 rounded-lg backdrop-blur-sm border border-eco-200/50 dark:border-eco-700/50">
+                    <div className="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg">
+                      <Brain className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="text-left">
+                      <p className="font-semibold text-sm text-gray-800 dark:text-gray-200">
+                        Smart Recognition
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        AI identifies clothing types
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3 p-4 bg-white/50 dark:bg-gray-800/50 rounded-lg backdrop-blur-sm border border-eco-200/50 dark:border-eco-700/50">
+                    <div className="p-2 bg-gradient-to-br from-eco-500 to-eco-600 rounded-lg">
+                      <Leaf className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="text-left">
+                      <p className="font-semibold text-sm text-gray-800 dark:text-gray-200">
+                        Carbon Analysis
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Instant footprint calculation
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3 p-4 bg-white/50 dark:bg-gray-800/50 rounded-lg backdrop-blur-sm border border-eco-200/50 dark:border-eco-700/50">
+                    <div className="p-2 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-lg">
+                      <Sparkles className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="text-left">
+                      <p className="font-semibold text-sm text-gray-800 dark:text-gray-200">
+                        Reward System
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Earn points for sustainability
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div className="relative">
                 <ImageUpload
