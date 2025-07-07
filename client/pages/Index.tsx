@@ -134,22 +134,16 @@ export default function Index() {
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="relative">
-                <div className="p-3 bg-gradient-to-br from-eco-500 to-eco-600 dark:from-eco-400 dark:to-eco-500 rounded-xl shadow-lg shadow-eco-500/30 rotate-3 hover:rotate-0 transition-transform duration-300">
-                  <Leaf className="w-7 h-7 text-white" />
-                </div>
-                {/* AI indicator */}
-                <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center animate-pulse">
-                  <Brain className="w-3 h-3 text-white" />
-                </div>
+              <div className="p-3 bg-gradient-to-br from-eco-500 to-eco-600 dark:from-eco-400 dark:to-eco-500 rounded-xl shadow-lg shadow-eco-500/30 rotate-3 hover:rotate-0 transition-transform duration-300">
+                <Leaf className="w-7 h-7 text-white" />
               </div>
               <div>
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-eco-700 to-eco-900 dark:from-eco-300 dark:to-eco-100 bg-clip-text text-transparent">
-                  EcoWear AI
+                  EcoWear
                 </h1>
                 <p className="text-eco-600 dark:text-eco-400 font-medium flex items-center gap-2">
                   <Zap className="w-4 h-4" />
-                  AI-Powered Carbon Tracker
+                  Carbon footprint tracker
                 </p>
               </div>
             </div>
@@ -178,10 +172,10 @@ export default function Index() {
           <TabsList className="grid w-full grid-cols-4 mb-8 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border border-eco-200 dark:border-eco-700 shadow-lg rounded-xl p-2">
             <TabsTrigger
               value="upload"
-              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:via-eco-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 rounded-lg"
+              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-eco-500 data-[state=active]:to-eco-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 rounded-lg"
             >
-              <Brain className="w-4 h-4" />
-              <span className="hidden sm:inline">AI Upload</span>
+              <Camera className="w-4 h-4" />
+              <span className="hidden sm:inline">Upload</span>
             </TabsTrigger>
             <TabsTrigger
               value="results"
