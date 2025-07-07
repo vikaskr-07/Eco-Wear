@@ -151,14 +151,16 @@ export default function Index() {
             <div className="flex items-center gap-4">
               <ThemeToggle />
               {ecoRewards && (
-                <div className="flex items-center gap-3 bg-gradient-to-r from-eco-100 to-eco-200 dark:from-eco-800/50 dark:to-eco-700/50 px-5 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                <div className="flex items-center gap-3 bg-gradient-to-r from-eco-100 to-eco-200 dark:from-eco-800/50 dark:to-eco-700/50 px-6 py-3 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 min-w-[160px]">
                   <Sparkles className="w-5 h-5 text-eco-600 dark:text-eco-400 animate-pulse" />
-                  <span className="text-xl font-bold text-eco-800 dark:text-eco-200">
-                    {ecoRewards.totalPoints.toLocaleString()}
-                  </span>
-                  <span className="text-eco-600 dark:text-eco-400 font-medium">
-                    eco-points
-                  </span>
+                  <div className="flex flex-col items-center">
+                    <span className="text-xl font-bold text-eco-800 dark:text-eco-200 leading-tight">
+                      {ecoRewards.totalPoints.toLocaleString()}
+                    </span>
+                    <span className="text-xs text-eco-600 dark:text-eco-400 font-medium -mt-1">
+                      eco-points
+                    </span>
+                  </div>
                 </div>
               )}
             </div>
@@ -208,25 +210,13 @@ export default function Index() {
             >
               <div className="text-center mb-10">
                 <div className="relative inline-block mb-6">
-                  <div className="flex items-center justify-center gap-3 mb-4">
-                    <div className="flex items-center gap-2 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 px-4 py-2 rounded-full">
-                      <Brain className="w-5 h-5 text-blue-600 dark:text-blue-400 animate-pulse" />
-                      <span className="text-sm font-semibold text-blue-700 dark:text-blue-300">
-                        Powered by AI Vision
-                      </span>
-                    </div>
-                  </div>
                   <h2 className="text-4xl font-bold bg-gradient-to-r from-eco-700 via-eco-800 to-eco-900 dark:from-eco-300 dark:via-eco-200 dark:to-eco-100 bg-clip-text text-transparent">
-                    AI Carbon Footprint Analysis
+                    Carbon Footprint Analysis
                   </h2>
-                  <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-blue-400 via-eco-500 to-purple-600 rounded-full animate-pulse" />
+                  <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-eco-400 via-eco-500 to-eco-600 rounded-full animate-pulse" />
                 </div>
                 <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
-                  Our{" "}
-                  <span className="font-semibold text-blue-600 dark:text-blue-400">
-                    advanced AI
-                  </span>{" "}
-                  instantly recognizes clothing items and calculates their
+                  Instantly recognize clothing items and calculate their
                   environmental impact. Earn{" "}
                   <span className="font-semibold text-eco-600 dark:text-eco-400">
                     eco-reward points
