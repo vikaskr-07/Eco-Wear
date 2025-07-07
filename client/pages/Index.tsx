@@ -100,27 +100,48 @@ export default function Index() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-eco-50 via-background to-eco-100">
+    <div className="min-h-screen bg-gradient-to-br from-eco-50 via-background to-eco-100 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-32 h-32 bg-eco-200/20 rounded-full animate-pulse" />
+        <div
+          className="absolute top-40 right-20 w-24 h-24 bg-eco-300/20 rounded-full animate-bounce"
+          style={{ animationDelay: "1s" }}
+        />
+        <div
+          className="absolute bottom-40 left-20 w-20 h-20 bg-eco-400/20 rounded-full animate-pulse"
+          style={{ animationDelay: "2s" }}
+        />
+        <div
+          className="absolute bottom-20 right-40 w-28 h-28 bg-eco-200/20 rounded-full animate-bounce"
+          style={{ animationDelay: "0.5s" }}
+        />
+      </div>
+
       {/* Header */}
-      <div className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
+      <div className="border-b bg-white/90 backdrop-blur-md sticky top-0 z-50 shadow-lg shadow-eco-100/20">
+        <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-eco-500 rounded-lg">
-                <Leaf className="w-6 h-6 text-white" />
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-gradient-to-br from-eco-500 to-eco-600 rounded-xl shadow-lg shadow-eco-500/30 rotate-3 hover:rotate-0 transition-transform duration-300">
+                <Leaf className="w-7 h-7 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-eco-800">EcoWear</h1>
-                <p className="text-sm text-eco-600">Carbon footprint tracker</p>
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-eco-700 to-eco-900 bg-clip-text text-transparent">
+                  EcoWear
+                </h1>
+                <p className="text-eco-600 font-medium">
+                  Carbon footprint tracker
+                </p>
               </div>
             </div>
             {ecoRewards && (
-              <div className="flex items-center gap-2 bg-eco-100 px-3 py-1 rounded-full">
-                <Sparkles className="w-4 h-4 text-eco-600" />
-                <span className="font-semibold text-eco-800">
+              <div className="flex items-center gap-3 bg-gradient-to-r from-eco-100 to-eco-200 px-5 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                <Sparkles className="w-5 h-5 text-eco-600 animate-pulse" />
+                <span className="text-xl font-bold text-eco-800">
                   {ecoRewards.totalPoints.toLocaleString()}
                 </span>
-                <span className="text-sm text-eco-600">pts</span>
+                <span className="text-eco-600 font-medium">eco-points</span>
               </div>
             )}
           </div>
@@ -130,45 +151,65 @@ export default function Index() {
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-8">
-            <TabsTrigger value="upload" className="flex items-center gap-2">
+          <TabsList className="grid w-full grid-cols-4 mb-8 bg-white/80 backdrop-blur-sm border shadow-lg rounded-xl p-2">
+            <TabsTrigger
+              value="upload"
+              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-eco-500 data-[state=active]:to-eco-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 rounded-lg"
+            >
               <Camera className="w-4 h-4" />
-              Upload
+              <span className="hidden sm:inline">Upload</span>
             </TabsTrigger>
             <TabsTrigger
               value="results"
               disabled={!analysisResult}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-eco-500 data-[state=active]:to-eco-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 rounded-lg disabled:opacity-50"
             >
               <Leaf className="w-4 h-4" />
-              Results
+              <span className="hidden sm:inline">Results</span>
             </TabsTrigger>
-            <TabsTrigger value="rewards" className="flex items-center gap-2">
+            <TabsTrigger
+              value="rewards"
+              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-eco-500 data-[state=active]:to-eco-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 rounded-lg"
+            >
               <Award className="w-4 h-4" />
-              Rewards
+              <span className="hidden sm:inline">Rewards</span>
             </TabsTrigger>
-            <TabsTrigger value="offers" className="flex items-center gap-2">
+            <TabsTrigger
+              value="offers"
+              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-eco-500 data-[state=active]:to-eco-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 rounded-lg"
+            >
               <Gift className="w-4 h-4" />
-              Offers
+              <span className="hidden sm:inline">Offers</span>
             </TabsTrigger>
           </TabsList>
 
           <div className="max-w-4xl mx-auto">
-            <TabsContent value="upload" className="space-y-6">
-              <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold mb-4">
-                  Track Your Clothing's Carbon Footprint
-                </h2>
-                <p className="text-muted-foreground max-w-2xl mx-auto">
+            <TabsContent
+              value="upload"
+              className="space-y-8 animate-in fade-in-50 duration-500"
+            >
+              <div className="text-center mb-10">
+                <div className="relative inline-block mb-6">
+                  <h2 className="text-4xl font-bold bg-gradient-to-r from-eco-700 via-eco-800 to-eco-900 bg-clip-text text-transparent">
+                    Track Your Clothing's Carbon Footprint
+                  </h2>
+                  <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-eco-400 to-eco-600 rounded-full" />
+                </div>
+                <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
                   Upload or capture an image of your clothing items to discover
-                  their environmental impact and earn eco-reward points for
-                  sustainable choices.
+                  their environmental impact and earn{" "}
+                  <span className="font-semibold text-eco-600">
+                    eco-reward points
+                  </span>{" "}
+                  for sustainable choices.
                 </p>
               </div>
-              <ImageUpload
-                onImageCapture={handleImageCapture}
-                isAnalyzing={isAnalyzing}
-              />
+              <div className="relative">
+                <ImageUpload
+                  onImageCapture={handleImageCapture}
+                  isAnalyzing={isAnalyzing}
+                />
+              </div>
             </TabsContent>
 
             <TabsContent value="results" className="space-y-6">
