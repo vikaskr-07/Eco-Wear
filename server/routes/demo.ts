@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import { ImageAnalysisResponse, ClothingItem } from "@shared/api";
+import { updateUserStats } from "./eco-rewards";
 
 // Mock clothing database for carbon footprint calculations
 const CLOTHING_CARBON_DATABASE = {
@@ -47,8 +48,7 @@ function mockImageRecognition(): ClothingItem[] {
   return recognizedItems;
 }
 
-// In-memory user storage (replace with database in production)
-let userEcoPoints = 1250; // Starting points
+// This data is now managed in eco-rewards.ts
 
 export const handleImageAnalysis: RequestHandler = (req, res) => {
   try {
@@ -74,8 +74,8 @@ export const handleImageAnalysis: RequestHandler = (req, res) => {
       const carbonBonus = Math.max(0, (20 - totalCarbonFootprint) * 5); // Bonus for low carbon
       const ecoRewardPoints = Math.floor(basePoints + carbonBonus);
 
-      // Update user points
-      userEcoPoints += ecoRewardPoints;
+      // Update user stats in eco-rewards system
+      updateUserStats(ecoRewardPoints, totalCarbonFootprint);
 
       const response: ImageAnalysisResponse = {
         items: recognizedItems,
