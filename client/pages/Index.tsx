@@ -175,13 +175,13 @@ export default function Index() {
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-8 bg-white/80 backdrop-blur-sm border shadow-lg rounded-xl p-2">
+          <TabsList className="grid w-full grid-cols-4 mb-8 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border border-eco-200 dark:border-eco-700 shadow-lg rounded-xl p-2">
             <TabsTrigger
               value="upload"
-              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-eco-500 data-[state=active]:to-eco-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 rounded-lg"
+              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:via-eco-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 rounded-lg"
             >
-              <Camera className="w-4 h-4" />
-              <span className="hidden sm:inline">Upload</span>
+              <Brain className="w-4 h-4" />
+              <span className="hidden sm:inline">AI Upload</span>
             </TabsTrigger>
             <TabsTrigger
               value="results"
