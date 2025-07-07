@@ -5,7 +5,8 @@ import { ImageUpload } from "@/components/ImageUpload";
 import { CarbonScore } from "@/components/CarbonScore";
 import { EcoRewards } from "@/components/EcoRewards";
 import { OffersList } from "@/components/OffersList";
-import { Leaf, Camera, Award, Gift, Sparkles } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { Leaf, Camera, Award, Gift, Sparkles, Brain, Zap } from "lucide-react";
 import {
   ImageAnalysisResponse,
   EcoRewardsResponse,
@@ -100,50 +101,73 @@ export default function Index() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-eco-50 via-background to-eco-100 relative overflow-hidden">
-      {/* Animated background elements */}
+    <div className="min-h-screen bg-gradient-to-br from-eco-50 via-background to-eco-100 dark:from-gray-900 dark:via-gray-800 dark:to-eco-900/20 relative overflow-hidden transition-colors duration-500">
+      {/* Enhanced animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-32 h-32 bg-eco-200/20 rounded-full animate-pulse" />
+        <div className="absolute top-20 left-10 w-32 h-32 bg-eco-200/20 dark:bg-eco-400/10 rounded-full animate-pulse" />
         <div
-          className="absolute top-40 right-20 w-24 h-24 bg-eco-300/20 rounded-full animate-bounce"
+          className="absolute top-40 right-20 w-24 h-24 bg-eco-300/20 dark:bg-eco-500/10 rounded-full animate-bounce"
           style={{ animationDelay: "1s" }}
         />
         <div
-          className="absolute bottom-40 left-20 w-20 h-20 bg-eco-400/20 rounded-full animate-pulse"
+          className="absolute bottom-40 left-20 w-20 h-20 bg-eco-400/20 dark:bg-eco-300/10 rounded-full animate-pulse"
           style={{ animationDelay: "2s" }}
         />
         <div
-          className="absolute bottom-20 right-40 w-28 h-28 bg-eco-200/20 rounded-full animate-bounce"
+          className="absolute bottom-20 right-40 w-28 h-28 bg-eco-200/20 dark:bg-eco-400/10 rounded-full animate-bounce"
           style={{ animationDelay: "0.5s" }}
+        />
+
+        {/* AI-themed background elements */}
+        <div
+          className="absolute top-60 left-1/2 w-16 h-16 bg-blue-300/20 dark:bg-blue-400/10 rounded-full animate-pulse"
+          style={{ animationDelay: "3s" }}
+        />
+        <div
+          className="absolute top-80 right-1/3 w-12 h-12 bg-purple-300/20 dark:bg-purple-400/10 rounded-full animate-bounce"
+          style={{ animationDelay: "2.5s" }}
         />
       </div>
 
-      {/* Header */}
-      <div className="border-b bg-white/90 backdrop-blur-md sticky top-0 z-50 shadow-lg shadow-eco-100/20">
+      {/* Enhanced Header with AI branding */}
+      <div className="border-b bg-white/90 dark:bg-gray-900/90 backdrop-blur-md sticky top-0 z-50 shadow-lg shadow-eco-100/20 dark:shadow-gray-900/20 transition-colors duration-500">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="p-3 bg-gradient-to-br from-eco-500 to-eco-600 rounded-xl shadow-lg shadow-eco-500/30 rotate-3 hover:rotate-0 transition-transform duration-300">
-                <Leaf className="w-7 h-7 text-white" />
+              <div className="relative">
+                <div className="p-3 bg-gradient-to-br from-eco-500 to-eco-600 dark:from-eco-400 dark:to-eco-500 rounded-xl shadow-lg shadow-eco-500/30 rotate-3 hover:rotate-0 transition-transform duration-300">
+                  <Leaf className="w-7 h-7 text-white" />
+                </div>
+                {/* AI indicator */}
+                <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center animate-pulse">
+                  <Brain className="w-3 h-3 text-white" />
+                </div>
               </div>
               <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-eco-700 to-eco-900 bg-clip-text text-transparent">
-                  EcoWear
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-eco-700 to-eco-900 dark:from-eco-300 dark:to-eco-100 bg-clip-text text-transparent">
+                  EcoWear AI
                 </h1>
-                <p className="text-eco-600 font-medium">
-                  Carbon footprint tracker
+                <p className="text-eco-600 dark:text-eco-400 font-medium flex items-center gap-2">
+                  <Zap className="w-4 h-4" />
+                  AI-Powered Carbon Tracker
                 </p>
               </div>
             </div>
-            {ecoRewards && (
-              <div className="flex items-center gap-3 bg-gradient-to-r from-eco-100 to-eco-200 px-5 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                <Sparkles className="w-5 h-5 text-eco-600 animate-pulse" />
-                <span className="text-xl font-bold text-eco-800">
-                  {ecoRewards.totalPoints.toLocaleString()}
-                </span>
-                <span className="text-eco-600 font-medium">eco-points</span>
-              </div>
-            )}
+
+            <div className="flex items-center gap-4">
+              <ThemeToggle />
+              {ecoRewards && (
+                <div className="flex items-center gap-3 bg-gradient-to-r from-eco-100 to-eco-200 dark:from-eco-800/50 dark:to-eco-700/50 px-5 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                  <Sparkles className="w-5 h-5 text-eco-600 dark:text-eco-400 animate-pulse" />
+                  <span className="text-xl font-bold text-eco-800 dark:text-eco-200">
+                    {ecoRewards.totalPoints.toLocaleString()}
+                  </span>
+                  <span className="text-eco-600 dark:text-eco-400 font-medium">
+                    eco-points
+                  </span>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
