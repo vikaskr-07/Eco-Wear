@@ -17,6 +17,7 @@ export interface ImageAnalysisResponse {
   totalCarbonFootprint: number;
   ecoRewardPoints: number;
   analysisId: string;
+  message?: string; // Optional message for when no clothing is detected
 }
 
 export interface EcoRewardsResponse {
