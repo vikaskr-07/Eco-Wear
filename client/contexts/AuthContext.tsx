@@ -132,7 +132,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         body: JSON.stringify(credentials),
       });
 
-      const data = await response.json();
+      let data;
+      try {
+        data = await response.json();
+      } catch (jsonError) {
+        // If JSON parsing fails, throw a more user-friendly error
+        throw new Error("Unable to connect to the server. Please try again.");
+      }
 
       if (!response.ok) {
         throw new Error(data.error || "Login failed");
@@ -159,7 +165,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         body: JSON.stringify(userData),
       });
 
-      const data = await response.json();
+      let data;
+      try {
+        data = await response.json();
+      } catch (jsonError) {
+        // If JSON parsing fails, throw a more user-friendly error
+        throw new Error("Unable to connect to the server. Please try again.");
+      }
 
       if (!response.ok) {
         throw new Error(data.error || "Registration failed");
