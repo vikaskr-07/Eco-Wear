@@ -132,21 +132,28 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         body: JSON.stringify(credentials),
       });
 
-      // Check if response has JSON content type
-      const contentType = response.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) {
-        // Server returned non-JSON response (likely HTML error page)
-        const text = await response.text();
-        console.error("Non-JSON response:", text);
-        throw new Error("Server error. Please try again later.");
-      }
+      // Read response body once and handle both JSON and non-JSON responses
+      const responseText = await response.text();
 
       let data;
       try {
-        data = await response.json();
+        data = JSON.parse(responseText);
       } catch (jsonError) {
-        console.error("JSON parsing failed:", jsonError);
-        throw new Error("Invalid server response. Please try again.");
+        // If JSON parsing fails, check what we got instead
+        console.error("JSON parsing failed. Response text:", responseText);
+
+        // Check if it looks like an HTML error page
+        if (
+          responseText.includes("<html") ||
+          responseText.includes("<!DOCTYPE")
+        ) {
+          throw new Error("Server error. Please try again later.");
+        }
+
+        // Otherwise it's likely a network/connection issue
+        throw new Error(
+          "Unable to connect to the server. Please check your connection.",
+        );
       }
 
       if (!response.ok) {
@@ -174,21 +181,28 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         body: JSON.stringify(userData),
       });
 
-      // Check if response has JSON content type
-      const contentType = response.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) {
-        // Server returned non-JSON response (likely HTML error page)
-        const text = await response.text();
-        console.error("Non-JSON response:", text);
-        throw new Error("Server error. Please try again later.");
-      }
+      // Read response body once and handle both JSON and non-JSON responses
+      const responseText = await response.text();
 
       let data;
       try {
-        data = await response.json();
+        data = JSON.parse(responseText);
       } catch (jsonError) {
-        console.error("JSON parsing failed:", jsonError);
-        throw new Error("Invalid server response. Please try again.");
+        // If JSON parsing fails, check what we got instead
+        console.error("JSON parsing failed. Response text:", responseText);
+
+        // Check if it looks like an HTML error page
+        if (
+          responseText.includes("<html") ||
+          responseText.includes("<!DOCTYPE")
+        ) {
+          throw new Error("Server error. Please try again later.");
+        }
+
+        // Otherwise it's likely a network/connection issue
+        throw new Error(
+          "Unable to connect to the server. Please check your connection.",
+        );
       }
 
       if (!response.ok) {
