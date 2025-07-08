@@ -124,6 +124,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = async (credentials: LoginRequest) => {
     setIsLoading(true);
     try {
+      console.log("Attempting login with:", { email: credentials.email });
+
       const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: {
@@ -132,11 +134,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         body: JSON.stringify(credentials),
       });
 
+      console.log("Response status:", response.status);
+      console.log(
+        "Response headers:",
+        Object.fromEntries(response.headers.entries()),
+      );
+
       let data;
       try {
-        data = await response.json();
+        const responseText = await response.text();
+        console.log("Response text:", responseText);
+        data = JSON.parse(responseText);
       } catch (jsonError) {
-        // If JSON parsing fails, throw a more user-friendly error
+        console.error("JSON parsing error:", jsonError);
+        console.error("Response was not valid JSON");
         throw new Error("Unable to connect to the server. Please try again.");
       }
 
