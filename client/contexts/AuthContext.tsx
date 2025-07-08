@@ -124,8 +124,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = async (credentials: LoginRequest) => {
     setIsLoading(true);
     try {
-      console.log("Attempting login with:", { email: credentials.email });
-
       const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: {
@@ -134,21 +132,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         body: JSON.stringify(credentials),
       });
 
-      console.log("Response status:", response.status);
-      console.log(
-        "Response headers:",
-        Object.fromEntries(response.headers.entries()),
-      );
+      // Check if response has JSON content type
+      const contentType = response.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        // Server returned non-JSON response (likely HTML error page)
+        const text = await response.text();
+        console.error("Non-JSON response:", text);
+        throw new Error("Server error. Please try again later.");
+      }
 
       let data;
       try {
-        const responseText = await response.text();
-        console.log("Response text:", responseText);
-        data = JSON.parse(responseText);
+        data = await response.json();
       } catch (jsonError) {
-        console.error("JSON parsing error:", jsonError);
-        console.error("Response was not valid JSON");
-        throw new Error("Unable to connect to the server. Please try again.");
+        console.error("JSON parsing failed:", jsonError);
+        throw new Error("Invalid server response. Please try again.");
       }
 
       if (!response.ok) {
@@ -176,12 +174,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         body: JSON.stringify(userData),
       });
 
+      // Check if response has JSON content type
+      const contentType = response.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        // Server returned non-JSON response (likely HTML error page)
+        const text = await response.text();
+        console.error("Non-JSON response:", text);
+        throw new Error("Server error. Please try again later.");
+      }
+
       let data;
       try {
         data = await response.json();
       } catch (jsonError) {
-        // If JSON parsing fails, throw a more user-friendly error
-        throw new Error("Unable to connect to the server. Please try again.");
+        console.error("JSON parsing failed:", jsonError);
+        throw new Error("Invalid server response. Please try again.");
       }
 
       if (!response.ok) {
