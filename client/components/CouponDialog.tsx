@@ -33,16 +33,8 @@ export function CouponDialog({
   const [copied, setCopied] = useState(false);
 
   const copyToClipboard = async () => {
-    try {
-      // Try modern Clipboard API first
-      if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(couponCode);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-        return;
-      }
-
-      // Fallback for older browsers or unsecure contexts
+    // Define fallback copy function
+    const fallbackCopy = () => {
       const textArea = document.createElement("textarea");
       textArea.value = couponCode;
       textArea.style.position = "fixed";
@@ -53,20 +45,41 @@ export function CouponDialog({
       textArea.select();
 
       try {
-        document.execCommand("copy");
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+        const successful = document.execCommand("copy");
+        if (successful) {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+          return true;
+        }
+        return false;
       } catch (err) {
         console.error("Fallback copy failed:", err);
-        // Show error message or alternative
-        alert(`Copy failed. Please manually copy this code: ${couponCode}`);
+        return false;
       } finally {
         textArea.remove();
       }
-    } catch (error) {
-      console.error("Failed to copy:", error);
-      // Last resort - show the code in an alert for manual copy
-      alert(`Copy failed. Please manually copy this code: ${couponCode}`);
+    };
+
+    // Try modern Clipboard API first, with immediate fallback on any error
+    if (navigator.clipboard && window.isSecureContext) {
+      try {
+        await navigator.clipboard.writeText(couponCode);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+        return;
+      } catch (error) {
+        console.warn("Clipboard API blocked, using fallback:", error);
+        // Fallback to legacy method
+        if (!fallbackCopy()) {
+          alert(`Please manually copy this code: ${couponCode}`);
+        }
+        return;
+      }
+    }
+
+    // Use fallback for older browsers or unsecure contexts
+    if (!fallbackCopy()) {
+      alert(`Please manually copy this code: ${couponCode}`);
     }
   };
 
