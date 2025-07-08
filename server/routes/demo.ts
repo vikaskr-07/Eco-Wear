@@ -172,7 +172,7 @@ export const handleImageAnalysis: RequestHandler = async (req, res) => {
         ecoRewardPoints: 10, // Small points for trying
         analysisId: `analysis_${Date.now()}`,
         message:
-          "No clothing items detected in this image. Please try uploading an image with clothing, shoes, or fashion accessories.",
+          "No clothing items detected in this image. Please try uploading an image with clothing like shirts, pants, dresses, or jackets.",
       });
     }
 
