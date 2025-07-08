@@ -187,8 +187,11 @@ export const handleImageAnalysis: RequestHandler = async (req, res) => {
     const carbonBonus = Math.max(0, (20 - totalCarbonFootprint) * 5); // Bonus for low carbon
     const ecoRewardPoints = Math.floor(basePoints + carbonBonus);
 
-    // Update user stats in eco-rewards system
-    updateUserStats(ecoRewardPoints, totalCarbonFootprint);
+    // Update user stats in eco-rewards system (only if user is authenticated)
+    const userId = (req as any).user?.userId;
+    if (userId) {
+      updateUserStats(userId, ecoRewardPoints, totalCarbonFootprint);
+    }
 
     const response: ImageAnalysisResponse = {
       items: recognizedItems,
