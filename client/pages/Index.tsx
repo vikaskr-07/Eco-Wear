@@ -374,15 +374,53 @@ export default function Index() {
                     <h2 className="text-2xl font-bold mb-2">
                       Analysis Results
                     </h2>
-                    <p className="text-muted-foreground">
-                      Here's the carbon footprint of your clothing items
-                    </p>
+                    {analysisResult.items.length > 0 ? (
+                      <p className="text-muted-foreground">
+                        Here's the carbon footprint of your clothing items
+                      </p>
+                    ) : (
+                      <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
+                        <p className="text-yellow-800 dark:text-yellow-200 font-medium mb-2">
+                          No Clothing Detected
+                        </p>
+                        <p className="text-yellow-700 dark:text-yellow-300 text-sm">
+                          {analysisResult.message ||
+                            "Please try uploading an image with clothing, shoes, or fashion accessories."}
+                        </p>
+                      </div>
+                    )}
                   </div>
-                  <CarbonScore
-                    items={analysisResult.items}
-                    totalCarbonFootprint={analysisResult.totalCarbonFootprint}
-                    ecoRewardPoints={analysisResult.ecoRewardPoints}
-                  />
+
+                  {analysisResult.items.length > 0 ? (
+                    <CarbonScore
+                      items={analysisResult.items}
+                      totalCarbonFootprint={analysisResult.totalCarbonFootprint}
+                      ecoRewardPoints={analysisResult.ecoRewardPoints}
+                    />
+                  ) : (
+                    <div className="text-center py-8">
+                      <div className="w-24 h-24 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Camera className="w-12 h-12 text-gray-400" />
+                      </div>
+                      <h3 className="text-lg font-semibold mb-2">
+                        Try a Different Image
+                      </h3>
+                      <p className="text-muted-foreground text-sm max-w-md mx-auto mb-4">
+                        Our AI specializes in detecting clothing items like
+                        shirts, pants, dresses, shoes, and accessories. Make
+                        sure your image clearly shows fashion items for the best
+                        results.
+                      </p>
+                      <div className="text-xs text-muted-foreground bg-muted rounded-lg p-3 max-w-lg mx-auto">
+                        <strong>
+                          You still earned {analysisResult.ecoRewardPoints}{" "}
+                          eco-points
+                        </strong>{" "}
+                        for trying to make more sustainable choices!
+                      </div>
+                    </div>
+                  )}
+
                   <div className="text-center">
                     <Button onClick={() => setActiveTab("upload")}>
                       Analyze Another Item
