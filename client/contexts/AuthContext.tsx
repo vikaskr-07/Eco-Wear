@@ -132,12 +132,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         body: JSON.stringify(credentials),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || "Login failed");
+        throw new Error(data.error || "Login failed");
       }
 
-      const data: AuthResponse = await response.json();
       setUser(data.user);
       saveTokens(data.tokens);
     } catch (error) {
@@ -159,12 +159,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         body: JSON.stringify(userData),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || "Registration failed");
+        throw new Error(data.error || "Registration failed");
       }
 
-      const data: AuthResponse = await response.json();
       setUser(data.user);
       saveTokens(data.tokens);
     } catch (error) {
