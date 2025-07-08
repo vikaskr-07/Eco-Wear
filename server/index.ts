@@ -3,6 +3,14 @@ import cors from "cors";
 import { handleImageAnalysis } from "./routes/demo";
 import { handleEcoRewards } from "./routes/eco-rewards";
 import { handleOffers, handleRedeemOffer } from "./routes/offers";
+import {
+  handleRegister,
+  handleLogin,
+  handleRefreshToken,
+  handleLogout,
+  handleMe,
+} from "./routes/auth";
+import { authenticateToken, optionalAuth } from "./middleware/auth";
 
 export function createServer() {
   const app = express();
@@ -17,15 +25,22 @@ export function createServer() {
     res.json({ message: "EcoWear API is running!" });
   });
 
-  // Image analysis endpoint
-  app.post("/api/analyze-image", handleImageAnalysis);
+  // Authentication routes
+  app.post("/api/auth/register", handleRegister);
+  app.post("/api/auth/login", handleLogin);
+  app.post("/api/auth/refresh", handleRefreshToken);
+  app.post("/api/auth/logout", handleLogout);
+  app.get("/api/auth/me", authenticateToken, handleMe);
 
-  // Eco rewards endpoints
-  app.get("/api/eco-rewards", handleEcoRewards);
+  // Image analysis endpoint (optional auth to track user progress)
+  app.post("/api/analyze-image", optionalAuth, handleImageAnalysis);
 
-  // Offers endpoints
-  app.get("/api/offers", handleOffers);
-  app.post("/api/redeem-offer", handleRedeemOffer);
+  // Eco rewards endpoints (optional auth for better user experience)
+  app.get("/api/eco-rewards", optionalAuth, handleEcoRewards);
+
+  // Offers endpoints (optional auth to track user redemptions)
+  app.get("/api/offers", optionalAuth, handleOffers);
+  app.post("/api/redeem-offer", optionalAuth, handleRedeemOffer);
 
   return app;
 }
