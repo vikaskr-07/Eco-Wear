@@ -359,11 +359,53 @@ export default function Index() {
                   </div>
                 </div>
               </div>
+
               <div className="relative">
-                <ImageUpload
-                  onImageCapture={handleImageCapture}
-                  isAnalyzing={isAnalyzing}
-                />
+                {isAuthenticated ? (
+                  <ImageUpload
+                    onImageCapture={handleImageCapture}
+                    isAnalyzing={isAnalyzing}
+                  />
+                ) : (
+                  // Login required message for non-authenticated users
+                  <div className="w-full max-w-md mx-auto">
+                    <div className="bg-gradient-to-br from-white to-eco-50/30 dark:from-gray-900 dark:to-eco-900/20 backdrop-blur-sm border-2 border-eco-200 dark:border-eco-700 rounded-xl shadow-2xl p-8 text-center">
+                      <div className="mb-6">
+                        <div className="w-20 h-20 mx-auto bg-gradient-to-br from-eco-100 to-eco-200 dark:from-eco-800 dark:to-eco-700 rounded-full flex items-center justify-center mb-4">
+                          <User className="w-10 h-10 text-eco-600 dark:text-eco-400" />
+                        </div>
+                        <h3 className="text-xl font-bold text-eco-800 dark:text-eco-200 mb-2">
+                          Sign In Required
+                        </h3>
+                        <p className="text-muted-foreground text-sm">
+                          Create an account to start analyzing your clothing's
+                          carbon footprint and earning eco-rewards.
+                        </p>
+                      </div>
+
+                      <div className="space-y-3">
+                        <Link to="/signup">
+                          <Button className="w-full bg-gradient-to-r from-eco-500 to-eco-600 hover:from-eco-600 hover:to-eco-700 text-white">
+                            Create Account
+                          </Button>
+                        </Link>
+                        <Link to="/login">
+                          <Button variant="outline" className="w-full">
+                            Sign In
+                          </Button>
+                        </Link>
+                      </div>
+
+                      <div className="mt-6 p-4 bg-eco-50 dark:bg-eco-900/30 rounded-lg border border-eco-200 dark:border-eco-700">
+                        <p className="text-xs text-eco-700 dark:text-eco-300">
+                          <strong>Why sign up?</strong> Track your progress,
+                          earn rewards, and contribute to a more sustainable
+                          future!
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </TabsContent>
 
