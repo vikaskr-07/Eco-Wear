@@ -483,44 +483,101 @@ export default function Index() {
             </TabsContent>
 
             <TabsContent value="rewards" className="space-y-6">
-              {ecoRewards ? (
-                <>
-                  <div className="text-center mb-6">
-                    <h2 className="text-2xl font-bold mb-2">Your Eco Impact</h2>
-                    <p className="text-muted-foreground">
-                      Track your environmental contributions and level progress
-                    </p>
+              {isAuthenticated ? (
+                ecoRewards ? (
+                  <>
+                    <div className="text-center mb-6">
+                      <h2 className="text-2xl font-bold mb-2">
+                        Your Eco Impact
+                      </h2>
+                      <p className="text-muted-foreground">
+                        Track your environmental contributions and level
+                        progress
+                      </p>
+                    </div>
+                    <EcoRewards rewards={ecoRewards} />
+                  </>
+                ) : (
+                  <div className="text-center py-12">
+                    <Award className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                    <h3 className="text-xl font-semibold mb-2">Loading...</h3>
                   </div>
-                  <EcoRewards rewards={ecoRewards} />
-                </>
+                )
               ) : (
+                // Login required for rewards
                 <div className="text-center py-12">
-                  <Award className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold mb-2">Loading...</h3>
+                  <div className="w-20 h-20 mx-auto bg-gradient-to-br from-yellow-100 to-orange-200 dark:from-yellow-800 dark:to-orange-700 rounded-full flex items-center justify-center mb-6">
+                    <Award className="w-10 h-10 text-yellow-600 dark:text-yellow-400" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-gray-200">
+                    Sign In to View Your Rewards
+                  </h3>
+                  <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+                    Track your eco-points, level progress, and environmental
+                    impact by creating an account.
+                  </p>
+                  <div className="flex gap-3 justify-center">
+                    <Link to="/login">
+                      <Button variant="outline">Sign In</Button>
+                    </Link>
+                    <Link to="/signup">
+                      <Button className="bg-gradient-to-r from-eco-500 to-eco-600 hover:from-eco-600 hover:to-eco-700">
+                        Create Account
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
               )}
             </TabsContent>
 
             <TabsContent value="offers" className="space-y-6">
-              {offers ? (
-                <>
-                  <div className="text-center mb-6">
-                    <h2 className="text-2xl font-bold mb-2">Redeem Rewards</h2>
-                    <p className="text-muted-foreground">
-                      Use your eco-points to unlock sustainable rewards and
-                      discounts
-                    </p>
+              {isAuthenticated ? (
+                offers ? (
+                  <>
+                    <div className="text-center mb-6">
+                      <h2 className="text-2xl font-bold mb-2">
+                        Redeem Rewards
+                      </h2>
+                      <p className="text-muted-foreground">
+                        Use your eco-points to unlock sustainable rewards and
+                        discounts
+                      </p>
+                    </div>
+                    <OffersList
+                      offers={offers.availableOffers}
+                      userPoints={offers.userPoints}
+                      onRedeemOffer={handleRedeemOffer}
+                    />
+                  </>
+                ) : (
+                  <div className="text-center py-12">
+                    <Gift className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                    <h3 className="text-xl font-semibold mb-2">Loading...</h3>
                   </div>
-                  <OffersList
-                    offers={offers.availableOffers}
-                    userPoints={offers.userPoints}
-                    onRedeemOffer={handleRedeemOffer}
-                  />
-                </>
+                )
               ) : (
+                // Login required for offers
                 <div className="text-center py-12">
-                  <Gift className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold mb-2">Loading...</h3>
+                  <div className="w-20 h-20 mx-auto bg-gradient-to-br from-purple-100 to-pink-200 dark:from-purple-800 dark:to-pink-700 rounded-full flex items-center justify-center mb-6">
+                    <Gift className="w-10 h-10 text-purple-600 dark:text-purple-400" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-gray-200">
+                    Sign In to View Offers
+                  </h3>
+                  <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+                    Earn eco-points by analyzing clothing and redeem them for
+                    sustainable rewards and discounts.
+                  </p>
+                  <div className="flex gap-3 justify-center">
+                    <Link to="/login">
+                      <Button variant="outline">Sign In</Button>
+                    </Link>
+                    <Link to="/signup">
+                      <Button className="bg-gradient-to-r from-eco-500 to-eco-600 hover:from-eco-600 hover:to-eco-700">
+                        Create Account
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
               )}
             </TabsContent>
