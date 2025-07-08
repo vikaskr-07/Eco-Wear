@@ -310,8 +310,8 @@ export default function Index() {
                   <span className="font-semibold text-eco-600 dark:text-eco-400">
                     eco-reward points
                   </span>{" "}
-                  for sustainable choices and discover your fashion's carbon
-                  footprint.
+                  for sustainable clothing choices and discover your wardrobe's
+                  carbon footprint.
                 </p>
 
                 {/* AI Features showcase */}
@@ -385,7 +385,7 @@ export default function Index() {
                         </p>
                         <p className="text-yellow-700 dark:text-yellow-300 text-sm">
                           {analysisResult.message ||
-                            "Please try uploading an image with clothing, shoes, or fashion accessories."}
+                            "Please try uploading an image with clothing items like shirts, pants, dresses, or jackets."}
                         </p>
                       </div>
                     )}
@@ -407,9 +407,8 @@ export default function Index() {
                       </h3>
                       <p className="text-muted-foreground text-sm max-w-md mx-auto mb-4">
                         Our AI specializes in detecting clothing items like
-                        shirts, pants, dresses, shoes, and accessories. Make
-                        sure your image clearly shows fashion items for the best
-                        results.
+                        shirts, pants, dresses, jackets, and sweaters. Make sure
+                        your image clearly shows clothing for the best results.
                       </p>
                       <div className="text-xs text-muted-foreground bg-muted rounded-lg p-3 max-w-lg mx-auto">
                         <strong>
