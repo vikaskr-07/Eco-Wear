@@ -74,9 +74,15 @@ const AVAILABLE_OFFERS: Offer[] = [
   },
 ];
 
-export const handleOffers: RequestHandler = (_req, res) => {
+export const handleOffers: RequestHandler = (req: any, res) => {
   try {
-    const userPoints = getUserPoints();
+    // Check if user is authenticated
+    const userId = req.user?.userId;
+    if (!userId) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    const userPoints = getUserPoints(userId);
 
     const response: OffersResponse = {
       availableOffers: AVAILABLE_OFFERS,
@@ -90,8 +96,14 @@ export const handleOffers: RequestHandler = (_req, res) => {
   }
 };
 
-export const handleRedeemOffer: RequestHandler = (req, res) => {
+export const handleRedeemOffer: RequestHandler = (req: any, res) => {
   try {
+    // Check if user is authenticated
+    const userId = req.user?.userId;
+    if (!userId) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
     const { offerId } = req.body;
 
     if (!offerId) {
@@ -105,7 +117,7 @@ export const handleRedeemOffer: RequestHandler = (req, res) => {
     }
 
     // Check if user has enough points
-    const userPoints = getUserPoints();
+    const userPoints = getUserPoints(userId);
     if (userPoints < offer.pointsCost) {
       return res.status(400).json({
         error: "Insufficient points",
@@ -115,7 +127,7 @@ export const handleRedeemOffer: RequestHandler = (req, res) => {
     }
 
     // Deduct points
-    const success = deductUserPoints(offer.pointsCost);
+    const success = deductUserPoints(userId, offer.pointsCost);
     if (!success) {
       return res.status(500).json({ error: "Failed to deduct points" });
     }
@@ -130,7 +142,7 @@ export const handleRedeemOffer: RequestHandler = (req, res) => {
       success: true,
       message: `Successfully redeemed: ${offer.title}`,
       pointsDeducted: offer.pointsCost,
-      remainingPoints: getUserPoints(),
+      remainingPoints: getUserPoints(userId),
       redemptionId: `redemption_${Date.now()}`,
     });
   } catch (error) {
