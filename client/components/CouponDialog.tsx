@@ -34,11 +34,39 @@ export function CouponDialog({
 
   const copyToClipboard = async () => {
     try {
-      await navigator.clipboard.writeText(couponCode);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      // Try modern Clipboard API first
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(couponCode);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+        return;
+      }
+
+      // Fallback for older browsers or unsecure contexts
+      const textArea = document.createElement("textarea");
+      textArea.value = couponCode;
+      textArea.style.position = "fixed";
+      textArea.style.left = "-999999px";
+      textArea.style.top = "-999999px";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+
+      try {
+        document.execCommand("copy");
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      } catch (err) {
+        console.error("Fallback copy failed:", err);
+        // Show error message or alternative
+        alert(`Copy failed. Please manually copy this code: ${couponCode}`);
+      } finally {
+        textArea.remove();
+      }
     } catch (error) {
       console.error("Failed to copy:", error);
+      // Last resort - show the code in an alert for manual copy
+      alert(`Copy failed. Please manually copy this code: ${couponCode}`);
     }
   };
 
