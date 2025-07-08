@@ -35,12 +35,12 @@ export function createServer() {
   // Image analysis endpoint (optional auth to track user progress)
   app.post("/api/analyze-image", optionalAuth, handleImageAnalysis);
 
-  // Eco rewards endpoints (optional auth for better user experience)
-  app.get("/api/eco-rewards", optionalAuth, handleEcoRewards);
+  // Eco rewards endpoints (require auth for user-specific data)
+  app.get("/api/eco-rewards", authenticateToken, handleEcoRewards);
 
-  // Offers endpoints (optional auth to track user redemptions)
-  app.get("/api/offers", optionalAuth, handleOffers);
-  app.post("/api/redeem-offer", optionalAuth, handleRedeemOffer);
+  // Offers endpoints (require auth for user-specific data)
+  app.get("/api/offers", authenticateToken, handleOffers);
+  app.post("/api/redeem-offer", authenticateToken, handleRedeemOffer);
 
   return app;
 }
