@@ -111,19 +111,31 @@ export const handleLogin: RequestHandler = async (req, res) => {
 
     // Validation
     if (!email || !password) {
-      return res.status(400).json({ error: "Email and password are required" });
+      return res.status(400).json({
+        error: "Email and password are required",
+        type: "validation",
+      });
     }
 
     // Find user
     const userData = findUserByEmail(email.toLowerCase());
     if (!userData) {
-      return res.status(401).json({ error: "Invalid email or password" });
+      return res.status(404).json({
+        error:
+          "No account found with this email address. Would you like to create an account?",
+        type: "user_not_found",
+        suggestion: "signup",
+      });
     }
 
     // Verify password
     const isPasswordValid = await bcrypt.compare(password, userData.password);
     if (!isPasswordValid) {
-      return res.status(401).json({ error: "Invalid email or password" });
+      return res.status(401).json({
+        error: "Incorrect password. Please check your password and try again.",
+        type: "wrong_password",
+        suggestion: "reset_password",
+      });
     }
 
     // Extract user without password
