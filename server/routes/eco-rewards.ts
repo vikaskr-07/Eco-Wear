@@ -1,12 +1,15 @@
 import { RequestHandler } from "express";
 import { EcoRewardsResponse } from "@shared/api";
 
-// In-memory user data (replace with database in production)
-let userStats = {
-  totalPoints: 1250,
-  totalCarbonSaved: 45.7,
-  analysesCount: 9,
-};
+// User-specific data storage (replace with database in production)
+const userStatsDatabase = new Map<
+  string,
+  {
+    totalPoints: number;
+    totalCarbonSaved: number;
+    analysesCount: number;
+  }
+>();
 
 function getUserLevel(points: number): string {
   if (points < 500) return "Bronze";
@@ -22,8 +25,27 @@ function getNextLevelPoints(points: number): number {
   return points + 2000; // Platinum users get next milestone
 }
 
-export const handleEcoRewards: RequestHandler = (_req, res) => {
+function getUserStats(userId: string) {
+  if (!userStatsDatabase.has(userId)) {
+    // Initialize new user with starting values
+    userStatsDatabase.set(userId, {
+      totalPoints: 0,
+      totalCarbonSaved: 0,
+      analysesCount: 0,
+    });
+  }
+  return userStatsDatabase.get(userId)!;
+}
+
+export const handleEcoRewards: RequestHandler = (req: any, res) => {
   try {
+    // Check if user is authenticated
+    const userId = req.user?.userId;
+    if (!userId) {
+      return res.status(401).json({ error: "Authentication required" });
+    }
+
+    const userStats = getUserStats(userId);
     const level = getUserLevel(userStats.totalPoints);
     const nextLevelPoints = getNextLevelPoints(userStats.totalPoints);
 
@@ -42,17 +64,29 @@ export const handleEcoRewards: RequestHandler = (_req, res) => {
 };
 
 // Function to update user stats (called from image analysis)
-export function updateUserStats(pointsEarned: number, carbonSaved: number) {
+export function updateUserStats(
+  userId: string,
+  pointsEarned: number,
+  carbonSaved: number,
+) {
+  if (!userId) return; // Don't update stats for non-authenticated users
+
+  const userStats = getUserStats(userId);
   userStats.totalPoints += pointsEarned;
   userStats.totalCarbonSaved += carbonSaved;
   userStats.analysesCount += 1;
 }
 
-export function getUserPoints(): number {
+export function getUserPoints(userId: string): number {
+  if (!userId) return 0;
+  const userStats = getUserStats(userId);
   return userStats.totalPoints;
 }
 
-export function deductUserPoints(points: number): boolean {
+export function deductUserPoints(userId: string, points: number): boolean {
+  if (!userId) return false;
+
+  const userStats = getUserStats(userId);
   if (userStats.totalPoints >= points) {
     userStats.totalPoints -= points;
     return true;
