@@ -48,7 +48,11 @@ export default function Login() {
     try {
       await login(formData);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Login failed");
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Login failed. Please try again.");
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -109,7 +113,26 @@ export default function Login() {
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && (
                 <Alert variant="destructive">
-                  <AlertDescription>{error}</AlertDescription>
+                  <AlertDescription>
+                    {error}
+                    {error.includes("No account found") && (
+                      <div className="mt-3">
+                        <Link
+                          to="/signup"
+                          className="inline-flex items-center gap-1 text-sm font-medium text-destructive-foreground hover:underline"
+                        >
+                          Create an account instead →
+                        </Link>
+                      </div>
+                    )}
+                    {error.includes("Incorrect password") && (
+                      <div className="mt-2">
+                        <p className="text-sm text-destructive-foreground/80">
+                          💡 Tip: Check that Caps Lock is off and try again
+                        </p>
+                      </div>
+                    )}
+                  </AlertDescription>
                 </Alert>
               )}
 
