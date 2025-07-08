@@ -1,12 +1,33 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { ImageUpload } from "@/components/ImageUpload";
 import { CarbonScore } from "@/components/CarbonScore";
 import { EcoRewards } from "@/components/EcoRewards";
 import { OffersList } from "@/components/OffersList";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { Leaf, Camera, Award, Gift, Sparkles, Brain, Zap } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import {
+  Leaf,
+  Camera,
+  Award,
+  Gift,
+  Sparkles,
+  Brain,
+  Zap,
+  User,
+  LogOut,
+} from "lucide-react";
 import {
   ImageAnalysisResponse,
   EcoRewardsResponse,
@@ -14,6 +35,7 @@ import {
 } from "@shared/api";
 
 export default function Index() {
+  const { user, isAuthenticated, logout } = useAuth();
   const [analysisResult, setAnalysisResult] =
     useState<ImageAnalysisResponse | null>(null);
   const [ecoRewards, setEcoRewards] = useState<EcoRewardsResponse | null>(null);
@@ -27,14 +49,26 @@ export default function Index() {
     fetchOffers();
   }, []);
 
+  const getAuthHeaders = () => {
+    const tokens = localStorage.getItem("auth_tokens");
+    if (tokens) {
+      const { accessToken } = JSON.parse(tokens);
+      return {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      };
+    }
+    return {
+      "Content-Type": "application/json",
+    };
+  };
+
   const handleImageCapture = async (imageData: string) => {
     setIsAnalyzing(true);
     try {
       const response = await fetch("/api/analyze-image", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify({ imageData }),
       });
 
@@ -58,7 +92,9 @@ export default function Index() {
 
   const fetchEcoRewards = async () => {
     try {
-      const response = await fetch("/api/eco-rewards");
+      const response = await fetch("/api/eco-rewards", {
+        headers: getAuthHeaders(),
+      });
       if (response.ok) {
         const data: EcoRewardsResponse = await response.json();
         setEcoRewards(data);
@@ -70,7 +106,9 @@ export default function Index() {
 
   const fetchOffers = async () => {
     try {
-      const response = await fetch("/api/offers");
+      const response = await fetch("/api/offers", {
+        headers: getAuthHeaders(),
+      });
       if (response.ok) {
         const data: OffersResponse = await response.json();
         setOffers(data);
@@ -84,9 +122,7 @@ export default function Index() {
     try {
       const response = await fetch("/api/redeem-offer", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify({ offerId }),
       });
 
@@ -150,7 +186,7 @@ export default function Index() {
 
             <div className="flex items-center gap-4">
               <ThemeToggle />
-              {ecoRewards && (
+              {isAuthenticated && ecoRewards && (
                 <div className="flex items-center gap-3 bg-gradient-to-r from-eco-100 to-eco-200 dark:from-eco-800/50 dark:to-eco-700/50 px-6 py-3 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 min-w-[160px]">
                   <Sparkles className="w-5 h-5 text-eco-600 dark:text-eco-400 animate-pulse" />
                   <div className="flex flex-col items-center">
@@ -161,6 +197,59 @@ export default function Index() {
                       eco-points
                     </span>
                   </div>
+                </div>
+              )}
+
+              {isAuthenticated ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      className="relative h-10 w-10 rounded-full"
+                    >
+                      <Avatar className="h-10 w-10">
+                        <AvatarFallback className="bg-gradient-to-br from-eco-500 to-eco-600 text-white">
+                          {user?.name.charAt(0).toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56" align="end" forceMount>
+                    <DropdownMenuLabel className="font-normal">
+                      <div className="flex flex-col space-y-1">
+                        <p className="text-sm font-medium leading-none">
+                          {user?.name}
+                        </p>
+                        <p className="text-xs leading-none text-muted-foreground">
+                          {user?.email}
+                        </p>
+                      </div>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      onClick={logout}
+                      className="cursor-pointer"
+                    >
+                      <LogOut className="mr-2 h-4 w-4" />
+                      <span>Log out</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <Link to="/login">
+                    <Button variant="ghost" size="sm">
+                      Sign In
+                    </Button>
+                  </Link>
+                  <Link to="/signup">
+                    <Button
+                      size="sm"
+                      className="bg-gradient-to-r from-eco-500 to-eco-600 hover:from-eco-600 hover:to-eco-700 text-white"
+                    >
+                      Sign Up
+                    </Button>
+                  </Link>
                 </div>
               )}
             </div>
