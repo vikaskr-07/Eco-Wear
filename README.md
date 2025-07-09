@@ -259,19 +259,3 @@ docker run -p 8080:8080 ecowear-app
 3. **Sustainability Certifications**: GOTS, OEKO-TEX, Fair Trade verification
 4. **Shipping Integration**: Carbon footprint of delivery options
 5. **Recycling Programs**: Connection to textile recycling services
-
-## ��� License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🤝 Contributing
-
-Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
-
-## 📞 Support
-
-For questions or support, please contact [support@ecowear.app](mailto:support@ecowear.app) or open an issue on GitHub.
-
----
-
-**Making fashion more sustainable, one analysis at a time! 🌱**
